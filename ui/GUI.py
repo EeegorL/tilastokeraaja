@@ -110,13 +110,13 @@ class UI:
                 button["state"] = "disable";
                 button["state"] = "disable";
 
-                i = 0;
+                stautsMarginMult = 0;
                 delXlsx(this.folderPath);
                 for location in this.fetchLocations:
-                    i += 1;
+                    stautsMarginMult += 1;
 
                     statusElem = ttk.Label(mainFrame, text=location, font="Arial 10");
-                    statusElem.place(x=0, y=250+(25*i));
+                    statusElem.place(x=0, y=250+(25*stautsMarginMult));
 
                     this.statusElems.append(statusElem);
                     
@@ -125,9 +125,11 @@ class UI:
                     doXlsxThings(data, this.folderPath);
                 
                     statusElem.config(text=location+": \u2713", foreground="green", font=("Arial","12","bold"));
-                os.startfile(this.folderPath + getFileName());
+                
+                os.startfile((this.folderPath + getFileName()).replace("/","\\"));
                 time.sleep(2);
-                i = 0;
+                
+                stautsMarginMult = 0;
                 forget();
                 this.fetchLocations = [];
                 button["state"] = "enable";
@@ -150,7 +152,7 @@ class UI:
                 thrd.start();
             else:
                 button["state"] = "disable";
-                i = 0;
+                stautsMarginMult = 0;
                 errorTitle = ttk.Label(mainFrame, text="Virheet:", font=("Arial","10","bold"), style="errorLabel.TLabel");
                 errorTitle.place(x=0, y=250);
                 this.statusElems.append(errorTitle);
@@ -170,13 +172,10 @@ class UI:
                         radioCont.config(highlightbackground="red", highlightthickness=2);
 
                     statusElem = ttk.Label(mainFrame, text=error, font="Arial 10");
-                    statusElem.place(x=0, y=275+(25*i));
+                    statusElem.place(x=0, y=275+(25*stautsMarginMult));
                     this.statusElems.append(statusElem);
-                    i += 1;
+                    stautsMarginMult += 1;
                 
-
-
-
                 forgetTimer = threading.Timer(3, forget);
                 forgetTimer.start();
 
