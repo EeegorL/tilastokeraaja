@@ -33,6 +33,7 @@ def doXlsxThings(data, folder):
     dateCounter = 2;
 
     # header
+    sheet["A1"] = data["time"];
     sheet[column + str(row - 1)] = data["location"];
 
     # data

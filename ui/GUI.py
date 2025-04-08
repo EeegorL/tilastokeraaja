@@ -51,21 +51,22 @@ class UI:
             return True;
             
         def timesAreValid(t1, t2):
-            if(":" not in t1 or ":" not in t2):
+            if(":" in t1 or ":" in t2):
                 return False;
         
-            for x in t1.split(":"), t2.split(":"):
-                if(len(x[0]) != 2 or len(x[1]) != 2):
-                    return False;
-        
-            format = "%d.%m.%Y %H:%M";
-            dummyDate = "01.01.1990 "; # dummydate for time checking
+            format = "%d.%m.%Y %H";
+            dummyDate = "01.01.1990 "; # dummy date for time checking
             startDate = dummyDate + t1;
             endDate = dummyDate + t2;
 
             try:
                 timedate1 = datetime.strptime(startDate, format);
-                timedate2 = datetime.strptime(endDate, format);
+                if(int(t2) != 24):
+                    timedate2 = datetime.strptime(endDate, format);
+                else:
+                    minuteFormat = "%d.%m.%Y %H:%M:%S";
+                    timedate2 = datetime.strptime(dummyDate + "23:59:59", minuteFormat);
+
             except ValueError:
                 return False;
 
@@ -125,8 +126,8 @@ class UI:
                     doXlsxThings(data, this.folderPath);
                 
                     statusElem.config(text=location+": \u2713", foreground="green", font=("Arial","12","bold"));
-                
-                os.startfile((this.folderPath + getFileName()).replace("/","\\"));
+                if(avaaheti.get()):
+                    os.startfile((this.folderPath + getFileName()).replace("/","\\"));
                 time.sleep(2);
                 
                 stautsMarginMult = 0;
@@ -184,6 +185,8 @@ class UI:
         viikki = IntVar();
         terkko = IntVar();
 
+        avaaheti = IntVar();
+
         s = ttk.Style();
         s.configure("s.TLabel", background="white", foreground="black");
         s.configure("errorLabel.TLabel", foreground="red");
@@ -204,7 +207,6 @@ class UI:
 
         titleLabel = ttk.Label(headerFrame, text="Tilastokerääjä", style="s.TLabel", font="Arial 15");
         titleLabel.grid(row=0, column=0, padx=15, pady=10);
-
 
         radioCont = tk.Frame(sideFrame, highlightbackground="black", highlightthickness=1);
         radioCont.grid(row=1, column=0, columnspan= 1, padx=15, pady=(10, 9));
@@ -239,28 +241,30 @@ class UI:
         dateEndInput = ttk.Entry(centerFrame, width=12, font="Arial 12");
         dateEndInput.grid(row=2, column=2, sticky=N);
 
-        timeFormatLabel = ttk.Label(centerFrame, text="TT:MM", font="Arial 12");
+        timeFormatLabel = ttk.Label(centerFrame, text="TT", font="Arial 12");
         timeFormatLabel.grid(row=3, column=2, sticky=W);
 
         dateStartLabel = ttk.Label(centerFrame, text="Aika - alku", font="Arial 12");
         dateStartLabel.grid(row=4, column=1, sticky=W);
 
-        timeExample = ttk.Label(centerFrame, text="esim. 08:13, 14:01", font="Arial 10");
+        timeExample = ttk.Label(centerFrame, text="esim. 08, 14 ( 00-24 ). Ei minuutteja", font="Arial 10");
         timeExample.grid(row=4, column=3, sticky=W);
 
         timeStartInput = ttk.Entry(centerFrame, width=12, font="Arial 12");
-        timeStartInput.insert(END, "08:00"); # default start
+        timeStartInput.insert(END, "08"); # default start
         timeStartInput.grid(row=4, column=2, sticky=N);
 
         timeEndLabel = ttk.Label(centerFrame, text="Aika - loppu", font="Arial 12");
         timeEndLabel.grid(row=5, column=1, sticky=W);
     
         timeEndInput = ttk.Entry(centerFrame, width=12, font="Arial 12");
-        timeEndInput.insert(END, "23:00"); # default end
+        timeEndInput.insert(END, "23"); # default end
         timeEndInput.grid(row=5, column=2, sticky=N);
 
         button = ttk.Button(centerFrame, text="Hae", command=submit);
         button.grid(row=8, column=2, pady=(10,0));
+        avaa = ttk.Checkbutton(centerFrame, text="Avaa heti",variable=avaaheti, onvalue=1, offvalue=0, command=select);
+        avaa.grid(row=9, column=2);
 
         statusFrame = tk.Frame(sideFrame);
         statusFrame.grid(row=8, column=0);
