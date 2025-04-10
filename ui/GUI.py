@@ -264,6 +264,7 @@ class UI:
         button = ttk.Button(centerFrame, text="Hae", command=submit);
         button.grid(row=8, column=2, pady=(10,0));
         avaa = ttk.Checkbutton(centerFrame, text="Avaa heti",variable=avaaheti, onvalue=1, offvalue=0, command=select);
+        avaa.invoke(); # päällä oletuksena
         avaa.grid(row=9, column=2);
 
         statusFrame = tk.Frame(sideFrame);
