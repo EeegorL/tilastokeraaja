@@ -1,4 +1,4 @@
-from openpyxl import *;
+from openpyxl import Workbook, load_workbook;
 from utils.utils import sheetColumn;
 import os;
 from datetime import datetime;
