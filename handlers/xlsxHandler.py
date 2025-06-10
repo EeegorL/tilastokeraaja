@@ -5,22 +5,22 @@ from datetime import datetime;
 
 def getFileName():
     date = datetime.today();
-    dd = str(date.day) if len(str(date.day)) == 2 else "0" + str(date.day);
-    mm = str(date.month) if len(str(date.month)) == 2 else "0" + str(date.month);
+    dd = str(date.day) if len(str(date.day)) == 2 else f"0{str(date.day)}";
+    mm = str(date.month) if len(str(date.month)) == 2 else f"0{str(date.month)}";
     yyyy = str(date.year);
 
     date = f"{dd}{mm}{yyyy}";
 
     return f"/tulokset_{date}.xlsx"
 
-def delXlsx(folder):
+def delXlsx(folder: str) -> None:
     fName = getFileName();
     try:
         os.remove(folder+fName);
     except FileNotFoundError:
         pass;
 
-def doXlsxThings(data, folder):
+def doXlsxThings(data, folder: str):
     fName = getFileName();
     
     dummyWorkbook = Workbook();
@@ -34,25 +34,25 @@ def doXlsxThings(data, folder):
 
     # header
     sheet["A1"] = data["time"];
-    sheet[column + str(row - 1)] = data["location"];
+    sheet[f"{column}{str(row - 1)}"] = data["location"];
 
     # data
     for item in data["dates"]:
         date = item;
         dateSplit = date.split("-");
-        cell = sheet["A" + str(dateCounter)];
+        cell = sheet[f"A{str(dateCounter)}"];
         cell.number_format = "DD.MM.YYYY;@";
 
         dd = dateSplit[2];
         mm = dateSplit[1];
         yyyy = dateSplit[0];
 
-        sheet["A" + str(dateCounter)] = dd + "." + mm + "." + yyyy;
+        sheet[f"A{str(dateCounter)}"] = f"{dd}.{mm}.{yyyy}";
 
         dateCounter += 1;
 
     for item in data["data"]:
-        sheet[column + str(row)] = item;
+        sheet[f"{column}{str(row)}"] = item;
         row += 1;
     try:
         dummyWorkbook.save(folder+fName);

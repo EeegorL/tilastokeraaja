@@ -1,4 +1,4 @@
-def locationCode(location): 
+def locationCode(location: str): 
     match(location.upper()):
         case "KAISA":
             return "138";
@@ -8,8 +8,9 @@ def locationCode(location):
             return "136";
         case "VIIKKI":
             return "140";
+        case _: pass;
 
-def sheetColumn(location): 
+def sheetColumn(location: str): 
     match(location.upper()):
         case "KAISA":
             return "B";
@@ -19,3 +20,4 @@ def sheetColumn(location):
             return "D";
         case "VIIKKI":
             return "E";
+        case _: pass;

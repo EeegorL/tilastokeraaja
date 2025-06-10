@@ -1,5 +1,5 @@
 
-Tilastokerääjän tarkoitus on helpottaa Mikroväylän palvelun laskemien Yliopiston kirjaston tilojen kävijämäärien
+Tilastokerääjän tarkoitus on helpottaa Mikroväylän palvelun laskemien HY:n kirjaston tilojen kävijämäärien
 keräämistä yhteen tiedostoon, joka muuten pitää tehdä pitkänä prosessina käsin. Tilastokerääjä yhdistää itsensä
 Mikroväylän palveluun (BMA-api, api.bma.fi), ja hakee sen kautta tietonsa HTTP-kutsuina.
 
@@ -33,11 +33,7 @@ Järjestelmä näyttää virheen, mikäli jokin tieto on väärässä muodossa, 
 Sovelluksessa pystyy myös valitsemaan tulostiedoston kohdekansion painamalla käyttöliittymän tiedostopolkunappia.
 Oletuksena on käyttäjän Ladatut tiedostot -kansio ("Downloads"). Valinnan voi peruuttaa Peruuta-napilla ("Cancel")
 
-Kun kaikki on paikallaan, paina Hae, jolloin haku alkaa. Haussa voi kestää jokin hetki, ja varsinkin Kaisan haussa
-voi kestää uuvuttava aika. Jos hakee Kaisasta tilastoja kuukaudelta kerralla tai suuremmaltakin aikaväliltä,
-kannattaa keittää kupponen kahvia tms. koska siinä voi kestää muutamakin minuutti.
-
-Muut kampukset ovat suht. nopeita.
+Kun kaikki on paikallaan, paina Hae, jolloin haku alkaa.
 
 Haku kirjoittaa tuloksensa jo olemassa olevaan, tai luomaansa "tulokset.xlsx"-excel-tiedostoon, joka on samaa
 muotoilua kuin P-aseman kävijätilasto-excelit. 
