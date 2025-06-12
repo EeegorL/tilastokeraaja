@@ -35,8 +35,9 @@ def fetchData(location: str, dateStart: str, dateEnd: str, timeStart: str, timeE
     # tavallinen fetch
     # ------------------------
     regularFetch = requests.get(bmaRegularUrl, headers={"Authorization": f"Bearer {loginToken}", "Cookie": f"PHPSESSID={cookie}"}).json();
-    if(regularFetch["status"] == True):
-        vector4dFetch = requests.get(bmaVectorUrl, headers={"Authorization": f"Bearer {loginToken}", "Cookie": f"PHPSESSID={cookie}"}).json();
+
+    if(regularFetch["status"] == True): 
+        vector4dFetch = requests.get(bmaVectorUrl, headers={"Authorization": f"Bearer {loginToken}", "Cookie": f"PHPSESSID={cookie}"}).json(); # aloittaa Vector4D haun vain jos "tavallinen" haku onnistuu. 
         datesWithTimes = regularFetch["x_label"];
         regularData = [];
         vectorData = [];

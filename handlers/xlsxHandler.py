@@ -3,7 +3,7 @@ from utils.utils import sheetColumn;
 import os;
 from datetime import datetime;
 
-def getFileName():
+def getFileName(): # luo päivään perustuvat nimen
     date = datetime.today();
     dd = str(date.day) if len(str(date.day)) == 2 else f"0{str(date.day)}";
     mm = str(date.month) if len(str(date.month)) == 2 else f"0{str(date.month)}";
@@ -13,14 +13,14 @@ def getFileName():
 
     return f"/tulokset_{date}.xlsx"
 
-def delXlsx(folder: str) -> None:
+def delXlsx(folder: str): # poistaa/yrittää poistaa tiedoston syötetyn sijainnin perusteella
     fName = getFileName();
     try:
         os.remove(folder+fName);
     except FileNotFoundError:
         pass;
 
-def doXlsxThings(data, folder: str):
+def doXlsxThings(data, folder: str): # itse xlsx-tulostiedoston luonti
     fName = getFileName();
     
     dummyWorkbook = Workbook();
@@ -28,7 +28,7 @@ def doXlsxThings(data, folder: str):
         dummyWorkbook = load_workbook(folder+getFileName());
     
     sheet = dummyWorkbook["Sheet"];
-    column = sheetColumn(data["location"]); # B/C/D/E depending on location
+    column = sheetColumn(data["location"]); # B/C/D/E riippuen sijainnista
     row = 2;
     dateCounter = 2;
 
@@ -60,7 +60,7 @@ def doXlsxThings(data, folder: str):
     except PermissionError:
         return False;
 
-def xlsxIsOpen(folder):
+def xlsxIsOpen(folder) -> bool: # onko tiedosto auki vai ei
     fName = getFileName();
     if(not os.path.isfile(folder+fName)):
         dummyWorkbook = Workbook();
