@@ -43,7 +43,7 @@ def fetchData(location: str, dateStart: str, dateEnd: str, timeStart: str, timeE
         vectorData = [];
 
         dates = [];
-        dayDataI1 = {}
+        dayDataIndexes = {}
         
         for date in datesWithTimes:
             justTheDate = date.split(" ")[0];
@@ -56,22 +56,22 @@ def fetchData(location: str, dateStart: str, dateEnd: str, timeStart: str, timeE
             hour = x.split(" ")[1].split(":")[0];
             date = x.split(" ")[0];
             if(int(timeStart) <= int(hour) < int(timeEnd)):
-                if(date in dayDataI1):
-                    dayDataI1[date].append(i);
+                if(date in dayDataIndexes):
+                    dayDataIndexes[date].append(i);
                 else:
-                    dayDataI1[date] = [i];
+                    dayDataIndexes[date] = [i];
         
-        for day in dayDataI1:
+        for day in dayDataIndexes:
             dayTotal = 0;
-            for dvc in data:
-                for i in dayDataI1[day]:
-                    dayTotal += dvc["visitors"][i];
+            for device in data:
+                for i in dayDataIndexes[day]:
+                    dayTotal += device["visitors"][i];
             regularData.append(int(math.ceil(dayTotal / 2)))
 
     # Vector4D fetch
     # ------------------------
         dates = [];
-        dayDataI2 = {};
+        dayDataIndexes_Vector4D = {};
         if(len(vector4dFetch["devices"]) > 0):
             try:
                 for i, x in enumerate(vector4dFetch["devices"][0]["data"]):
@@ -79,34 +79,34 @@ def fetchData(location: str, dateStart: str, dateEnd: str, timeStart: str, timeE
                     startDate = start.split(" ")[0];
                     hour = start.split(" ")[1].split(":")[0];
                     if(int(timeStart) <= int(hour) < int(timeEnd)):
-                        if(startDate in dayDataI2):
-                            dayDataI2[startDate].append(i);
+                        if(startDate in dayDataIndexes_Vector4D):
+                            dayDataIndexes_Vector4D[startDate].append(i);
                         else:
-                            dayDataI2[startDate] = [i];
+                            dayDataIndexes_Vector4D[startDate] = [i];
                             dates.append(startDate);
-
-                for day in dayDataI2:
+                
+                for day in dayDataIndexes_Vector4D:
                     dayTotal = 0;
                     for device in vector4dFetch["devices"]:
                         hourTotal = 0;
-                        for i in dayDataI1[day]:
+                        for i in dayDataIndexes[day]:
                             try:
                                 _data = device["data"];
-                                a_i = _data[i]["adult_in"] if _data[i]["adult_in"] != None else 0;
-                                a_o = _data[i]["adult_out"] if _data[i]["adult_out"] != None else 0;
-                                t_i = _data[i]["teen_in"] if _data[i]["teen_in"] != None else 0;
-                                t_o = _data[i]["teen_out"] if _data[i]["teen_out"] != None else 0;
-                                c_i = _data[i]["child_in"] if _data[i]["child_in"] != None else 0;
-                                c_o = _data[i]["child_out"] if _data[i]["child_out"] != None else 0;
-                                hourTotal += (a_i + a_o + t_i + t_o + c_i + c_o);
+                                adult_in = _data[i]["adult_in"] if _data[i]["adult_in"] != None else 0;
+                                adult_out = _data[i]["adult_out"] if _data[i]["adult_out"] != None else 0;
+                                teen_in = _data[i]["teen_in"] if _data[i]["teen_in"] != None else 0;
+                                teen_out = _data[i]["teen_out"] if _data[i]["teen_out"] != None else 0;
+                                child_in = _data[i]["child_in"] if _data[i]["child_in"] != None else 0;
+                                child_out = _data[i]["child_out"] if _data[i]["child_out"] != None else 0;
+                                hourTotal += (adult_in + adult_out + teen_in + teen_out + child_in + child_out);
                             except: # lähinnä jos laskurit ovat pois päältä ja tulee tyhjää dataa
-                                pass; # sama kuin hourTotal += 0
-                        
+                                pass;
+                
                         dayTotal += hourTotal;
                     vectorData.append(int(math.ceil(dayTotal / 2)));
             except Exception: # tänne ei kai pitäisi mennä, ellei BMA:n palvelu räjähdä tms.
                 pass;
-
+        
         resultArr = [];
         resultI = 0;
         while resultI < len(regularData):
