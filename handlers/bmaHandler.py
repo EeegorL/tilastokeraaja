@@ -5,14 +5,14 @@ from utils.utils import *;
 from dotenv import load_dotenv;
 load_dotenv();
 
-def fetchData(location: str, dateStart: str, dateEnd: str, timeStart: str, timeEnd: str):
-    bmaDefaultPath = os.getenv("BMA_DEFAULT_PATH");
-    username = os.getenv(f"BMA_USERNAME_{location.upper()}");
-    password = os.getenv(f"BMA_PASSWORD_{location.upper()}");
-    
-    session = requests.sessions.Session();
-    session.get(f"{bmaDefaultPath}/session");
+bmaDefaultPath = os.getenv("BMA_DEFAULT_PATH");
+username = os.getenv("BMA_USERNAME");
+password = os.getenv("BMA_PASSWORD");
 
+session = requests.sessions.Session();
+session.get(f"{bmaDefaultPath}/session");
+
+def fetchData(location: str, dateStart: str, dateEnd: str, timeStart: str, timeEnd: str):
     loginReqObject = session.post(f"{bmaDefaultPath}/jwt/login", {"username": username, "password": password, "email": False, "active_directory": False}).json();
     session.post(f"{bmaDefaultPath}/login", {"username": username, "password": password, "email": False, "active_directory": False}).json();
     session.options(f"{bmaDefaultPath}/jwt/login");
@@ -27,7 +27,7 @@ def fetchData(location: str, dateStart: str, dateEnd: str, timeStart: str, timeE
     endBackwards = f"{endSplit[2]}-{endSplit[1]}-{endSplit[0]}";
 
     thisLocationCode = locationCode(location=location);
-    timeStrForXlsx = f"{str(timeStart)}:00 - {str(timeEnd)}:00"
+    timeStrForXlsx = f"{str(timeStart)}:00 - {str(timeEnd)}:00";
 
     bmaRegularUrl = f"{bmaDefaultPath}/statistics/custom/hour/{startBackwards}%2000:00:00/{endBackwards}%2023:59:59/{thisLocationCode}/Europe/Helsinki";
     bmaVectorUrl = f"{bmaDefaultPath}/statistics/vector4d/{thisLocationCode}/hour/1/{startBackwards}%2000:00:00/{endBackwards}%2023:59:59/Europe/Helsinki";
@@ -43,7 +43,7 @@ def fetchData(location: str, dateStart: str, dateEnd: str, timeStart: str, timeE
         vectorData = [];
 
         dates = [];
-        dayDataIndexes = {}
+        dayDataIndexes = {};
         
         for date in datesWithTimes:
             justTheDate = date.split(" ")[0];
@@ -66,7 +66,7 @@ def fetchData(location: str, dateStart: str, dateEnd: str, timeStart: str, timeE
             for device in data:
                 for i in dayDataIndexes[day]:
                     dayTotal += device["visitors"][i];
-            regularData.append(int(math.ceil(dayTotal / 2)))
+            regularData.append(int(math.ceil(dayTotal / 2)));
 
     # Vector4D fetch
     # ------------------------
